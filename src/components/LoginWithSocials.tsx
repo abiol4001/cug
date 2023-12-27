@@ -19,14 +19,14 @@ const LoginWithSocials = ({text}: Props) => {
           </div>
 
           <div className='flex justify-between gap-4'>
-                <div className='border border-[#E8ECF4] rounded-md w-full h-[55px] relative flex justify-center items-center' >
-                  <Image src="/fb.svg" width={12} height={12} alt="" className='object-contain' />
+                <div className='border border-[#E8ECF4] rounded-md w-full h-[55px] relative flex justify-center items-center cursor-pointer group' >
+          <Image src="/fb.svg" width={12} height={12} alt="" className='object-contain group-hover:scale-110 transition' />
                 </div>
-                <div className='border border-[#E8ECF4] rounded-md w-full h-[55px] relative flex justify-center items-center'>
-                 <Image src="/google.svg" width={25} height={25} alt="" />
+                <div className='border border-[#E8ECF4] rounded-md w-full h-[55px] relative flex justify-center items-center cursor-pointer group'>
+          <Image src="/google.svg" width={25} height={25} alt="" className='group-hover:scale-110 transition' />
                 </div>
-                <div className='border border-[#E8ECF4] rounded-md w-full h-[55px] relative flex justify-center items-center'>
-                  <Image src="/apple.svg" width={25} height={25} alt="" />
+                <div className='border border-[#E8ECF4] rounded-md w-full h-[55px] relative flex transition justify-center items-center cursor-pointer group'>
+          <Image src="/apple.svg" width={25} height={25} alt="" className='group-hover:scale-110 transition' />
                 </div>
           </div>
 

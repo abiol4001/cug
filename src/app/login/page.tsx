@@ -7,8 +7,10 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { EyeIcon, EyeOffIcon } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 import React, { useState } from 'react'
 import { useForm } from 'react-hook-form'
+import { toast } from 'react-toastify'
 import * as z from "zod"
 
 type Props = {}
@@ -18,11 +20,11 @@ const LoginPage = (props: Props) => {
     const [isVisible, setIsVisible] = useState(false)
     const [isLoading, setIsLoading] = useState(false)
 
-
+    const router = useRouter()
 
     const base = process.env.NEXT_PUBLIC_BASE_URL
 
-    console.log(base)
+    // console.log(base)
 
     const FormSchema = z.object({
         email: z.string().email({ message: "Please use a valid email" }),
@@ -40,7 +42,7 @@ const LoginPage = (props: Props) => {
     } = useForm({ resolver: zodResolver(FormSchema) });
 
 
-    const submitForm = async (data: any) => {
+    const submitForm = async (data: z.infer<typeof FormSchema>) => {
         setIsLoading(true)
         try {
             const response = await axiosInstance.post('/api/v1/User/Login', {
@@ -55,10 +57,12 @@ const LoginPage = (props: Props) => {
             //         Accept: "application/json",
             //     },
             //     body: JSON.stringify(data),
-            // });;
+            // });
             console.log('API response:', response);
+            router.push("/homepage")
         } catch (error) {
             console.error("Login error:", error);
+            toast.error("Unable to login")
         } finally {
             setIsLoading(false)
         }
@@ -66,7 +70,7 @@ const LoginPage = (props: Props) => {
 
 
     return (
-        <div className='h-screen flex flex-col justify-center'>
+        <div className='h-screen flex flex-col justify-center px-4'>
             <div className='relative w-full mb-10 flex items-center justify-center'>
                 <Image src="/bluelogo.png" alt="blue logo" width={70} height={72} className='object-fill' />
             </div>

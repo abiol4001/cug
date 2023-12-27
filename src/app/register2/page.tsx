@@ -9,6 +9,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import React, { useState } from 'react'
 import { useForm } from 'react-hook-form'
+import { toast } from 'react-toastify'
 import * as z from "zod"
 type Props = {}
 
@@ -18,7 +19,7 @@ const RegisterPage = (props: Props) => {
     const [isVisibleConfirm, setIsVisibleConfirm] = useState(false)
     const [isLoading, setIsLoading] = useState(false)
 
-    const schema = z.object({
+    const FormSchema = z.object({
         phone_number: z
             .string()
             .min(10, { message: "Phone number must be atleast 10 digits long" })
@@ -41,26 +42,27 @@ const RegisterPage = (props: Props) => {
         formState,
         watch,
         formState: { errors },
-    } = useForm({ resolver: zodResolver(schema) });
+    } = useForm({ resolver: zodResolver(FormSchema) });
 
 
-    const submitForm = async (data: any) => {
+    const submitForm = async (data: z.infer<typeof schema>) => {
         setIsLoading(true)
         try {
-            const response = await axiosInstance.post('/api/v1/User/Register1', {
+            const response = await axiosInstance.post('/api/v1/User/Register2', data, {
                 headers: {
                     'Content-Type': 'application/json',
                 }
             });
             console.log('API response:', response);
         } catch (error) {
-            console.error("Login error:", error);
+            console.error("Register2 error:", error);
+            toast.error("Unable to process your request")
         } finally {
             setIsLoading(false)
         }
     }
   return (
-      <div className='h-screen flex flex-col justify-center'>
+      <div className='h-screen flex flex-col justify-center px-4'>
           <div className='relative w-full mb-10 flex items-center justify-center'>
               <Image src="/bluelogo.png" alt="blue logo" width={70} height={72} className='object-fill' />
           </div>

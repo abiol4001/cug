@@ -7,8 +7,10 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { EyeIcon, EyeOffIcon } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 import React, { useState } from 'react'
 import { useForm } from 'react-hook-form'
+import { toast } from 'react-toastify'
 import * as z from "zod"
 type Props = {}
 
@@ -17,7 +19,9 @@ const RegisterPage = (props: Props) => {
     const [isVisible, setIsVisible] = useState(false)
     const [isLoading, setIsLoading] = useState(false)
 
-    const schema = z.object({
+    const router = useRouter()
+
+    const FormSchema = z.object({
         fname: z
             .string()
             .min(3, { message: "First name must be at least 3 characters long" }),
@@ -42,26 +46,28 @@ const RegisterPage = (props: Props) => {
         formState,
         watch,
         formState: { errors },
-    } = useForm({ resolver: zodResolver(schema) });
+    } = useForm({ resolver: zodResolver(FormSchema) });
 
 
-    const submitForm = async (data: any) => {
+    const submitForm = async (data: z.infer<typeof FormSchema>) => {
         setIsLoading(true)
         try {
-            const response = await axiosInstance.post('/api/v1/User/Register1', {
+            const response = await axiosInstance.post('/api/v1/User/Register1', data, {
                 headers: {
                     'Content-Type': 'application/json',
                 }
             });
             console.log('API response:', response);
+            router.push("/register2")
         } catch (error) {
-            console.error("Login error:", error);
+            console.error("Register1 error:", error);
+            toast.error("Unable to process your request")
         } finally {
             setIsLoading(false)
         }
     }
   return (
-      <div className='h-screen flex flex-col justify-center'>
+      <div className='h-screen flex flex-col justify-center px-4'>
           <div className='relative w-full mb-10 flex items-center justify-center'>
               <Image src="/bluelogo.png" alt="blue logo" width={70} height={72} className='object-fill' />
           </div>

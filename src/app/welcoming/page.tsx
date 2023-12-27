@@ -11,8 +11,8 @@ const WelcomePage = (props: Props) => {
 
 
 
-            <div className='w-full h-[50%] flex flex-col relative'>
-                <Image src="" alt='' fill />
+            <div className='w-full h-[60%] flex flex-col relative'>
+                <Image src="/welcome.png" alt='' fill className='object-contain' />
             </div>
             <div>
                 <div className='relative w-full mb-10 flex items-center justify-center'>

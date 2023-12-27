@@ -2,6 +2,7 @@
 
 import LoginWithSocials from '@/components/LoginWithSocials'
 import { Button } from '@/components/ui/button'
+import { axiosInstance } from '@/lib/axiosConfig'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { EyeIcon, EyeOffIcon } from 'lucide-react'
 import Image from 'next/image'
@@ -14,15 +15,16 @@ type Props = {}
 const RegisterPage = (props: Props) => {
 
     const [isVisible, setIsVisible] = useState(false)
+    const [isLoading, setIsLoading] = useState(false)
 
     const schema = z.object({
-        first_name: z
+        fname: z
             .string()
             .min(3, { message: "First name must be at least 3 characters long" }),
-        last_name: z
+        lname: z
             .string()
             .min(3, { message: "Last name must be at least 3 characters long" }),
-        middle_name: z
+        mname: z
             .string()
             .min(3, { message: "Middle name must be at least 3 characters long" }),
         email: z.string().email({ message: "Please use a valid email" }),
@@ -41,6 +43,23 @@ const RegisterPage = (props: Props) => {
         watch,
         formState: { errors },
     } = useForm({ resolver: zodResolver(schema) });
+
+
+    const submitForm = async (data: any) => {
+        setIsLoading(true)
+        try {
+            const response = await axiosInstance.post('/api/v1/User/Register1', {
+                headers: {
+                    'Content-Type': 'application/json',
+                }
+            });
+            console.log('API response:', response);
+        } catch (error) {
+            console.error("Login error:", error);
+        } finally {
+            setIsLoading(false)
+        }
+    }
   return (
       <div className='h-screen flex flex-col justify-center'>
           <div className='relative w-full mb-10 flex items-center justify-center'>
@@ -51,21 +70,15 @@ const RegisterPage = (props: Props) => {
 
 
           <form
-              className="flex flex-col gap-5"
-              // onSubmit={handleSubmit(submitForm)}
+              className="flex flex-col gap-5 mt-8"
+              onSubmit={handleSubmit(submitForm)}
               noValidate
           >
 
               <div className="flex flex-col w-full">
-                  <label
-                      htmlFor="fName"
-                      className="text-[#474747] font-[400] mb-2 text-xs"
-                  >
-                      First name
-                  </label>
                   <input
                       type="text"
-                      className="border-[1px] border-gray-300 h-[43px] w-full outline-none px-3 placeholder:text-sm"
+                      className="border-[1px] border-gray-300 h-[43px] w-full rounded-[5px] outline-none px-3 placeholder:text-sm"
                       name="fname"
                       // value={userDetails.fname}
                       // onChange={handleInputChange}
@@ -79,15 +92,9 @@ const RegisterPage = (props: Props) => {
               </div>
 
               <div className="flex flex-col w-full">
-                  <label
-                      htmlFor="lName"
-                      className="text-[#474747] font-[400] mb-2 text-xs"
-                  >
-                      Last name
-                  </label>
                   <input
                       type="text"
-                      className="border-[1px] border-gray-300 h-[43px] w-full outline-none px-3 placeholder:text-sm"
+                      className="border-[1px] border-gray-300 h-[43px] w-full rounded-[5px] outline-none px-3 placeholder:text-sm"
                       name="lname"
                       // value={userDetails.fname}
                       // onChange={handleInputChange}
@@ -101,15 +108,9 @@ const RegisterPage = (props: Props) => {
               </div>
 
               <div className="flex flex-col w-full">
-                  <label
-                      htmlFor="mName"
-                      className="text-[#474747] font-[400] mb-2 text-xs"
-                  >
-                      Middle name
-                  </label>
                   <input
                       type="text"
-                      className="border-[1px] border-gray-300 h-[43px] w-full outline-none px-3 placeholder:text-sm"
+                      className="border-[1px] border-gray-300 h-[43px] w-full rounded-[5px] outline-none px-3 placeholder:text-sm"
                       name="mname"
                       // value={userDetails.fname}
                       // onChange={handleInputChange}
@@ -124,15 +125,9 @@ const RegisterPage = (props: Props) => {
 
 
               <div className="flex flex-col w-full">
-                  <label
-                      htmlFor="email"
-                      className="text-[#474747] font-[400] mb-2 text-xs"
-                  >
-                      Email
-                  </label>
                   <input
                       type="email"
-                      className="border-[1px] border-[#979797] h-[43px] rounded-[5px] w-full outline-none px-3"
+                      className="border-[1px] border-[#979797] h-[43px] rounded-[5px] w-full outline-none px-3 placeholder:text-sm"
                       name="email"
                       placeholder='Email'
                       {...register("email", {
@@ -148,36 +143,6 @@ const RegisterPage = (props: Props) => {
                   </p>
               </div>
 
-              {/* <div className="flex flex-col w-full relative">
-                  <label
-                      htmlFor="password"
-                      className="text-[#474747] font-[400] mb-2 text-xs"
-                  >
-                      Password
-                  </label>
-                  <div className="relative flex justify-end items-center h-fit">
-                      <input
-                          type={isVisible ? "text" : "password"}
-                          className="border-[1px] border-[#979797] h-[43px] rounded-[5px] w-full outline-none px-3"
-                          name="password"
-                          {...register("password")}
-                      />
-                      <div
-                          className="absolute right-3"
-                          onClick={() => setIsVisible(!isVisible)}
-                      >
-                          {isVisible ? (
-                              <EyeIcon />
-                          ) : (
-                              <EyeOffIcon />
-                          )}
-                      </div>
-                  </div>
-                  <p className="text-xs text-red-600 mt-1">
-                      {errors.password?.message}
-                  </p>
-              </div> */}
-
               <div className='flex justify-between text-sm'>
                   <Link href="/reset">
                       Forgot Password?
@@ -187,11 +152,11 @@ const RegisterPage = (props: Props) => {
                   </Link>
               </div>
 
-              <Button className='bg-bgGreen h-12 mb-6 disabled:bg-laGrey disabled:cursor-not-allowed"'>Login</Button>
+              <Button className='bg-bgGreen h-12 mb-6 disabled:bg-laGrey disabled:cursor-not-allowed"'>Next</Button>
           </form>
 
 
-          <LoginWithSocials />
+          <LoginWithSocials text="Sign up" />
 
       </div>
   )

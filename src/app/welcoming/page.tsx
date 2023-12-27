@@ -27,7 +27,7 @@ const WelcomePage = (props: Props) => {
                             Login
                         </Button>
                     </Link>
-                    <Link href="/register">
+                    <Link href="/register1">
                         <Button variant="outline" className='w-full bg-white h-12 text-black'>
                             Register
                         </Button>

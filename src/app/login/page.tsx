@@ -75,23 +75,18 @@ const LoginPage = (props: Props) => {
 
 
             <form
-                className="flex flex-col gap-5"
+                className="flex flex-col gap-5 mt-8"
                 onSubmit={handleSubmit(submitForm)}
                 noValidate
             >
 
 
                 <div className="flex flex-col w-full">
-                    <label
-                        htmlFor="email"
-                        className="text-[#474747] font-[400] mb-2 text-xs"
-                    >
-                        Email
-                    </label>
                     <input
                         type="email"
                         className="border-[1px] border-[#979797] h-[43px] rounded-[5px] w-full outline-none px-3"
                         name="email"
+                        placeholder='Enter your email'
                         {...register("email", {
                             pattern: {
                                 value:
@@ -106,17 +101,12 @@ const LoginPage = (props: Props) => {
                 </div>
 
                 <div className="flex flex-col w-full relative">
-                    <label
-                        htmlFor="password"
-                        className="text-[#474747] font-[400] mb-2 text-xs"
-                    >
-                        Password
-                    </label>
                     <div className="relative flex justify-end items-center h-fit">
                         <input
                             type={isVisible ? "text" : "password"}
                             className="border-[1px] border-[#979797] h-[43px] rounded-[5px] w-full outline-none px-3"
                             name="password"
+                            placeholder='Enter your password'
                             {...register("password")}
                         />
                         <div
@@ -139,7 +129,7 @@ const LoginPage = (props: Props) => {
                     <Link href="/reset">
                                 Forgot Password?
                     </Link>
-                    <Link href="/register">
+                    <Link href="/register1">
                                 {`Don't have an account`}?
                     </Link>
                 </div>
@@ -148,7 +138,7 @@ const LoginPage = (props: Props) => {
             </form>
 
 
-            <LoginWithSocials />
+            <LoginWithSocials text="Login" />
 
         </div>
     )

@@ -2,16 +2,18 @@ import { Apple, Facebook } from 'lucide-react'
 import Image from 'next/image'
 import React from 'react'
 
-type Props = {}
+type Props = {
+  text: string
+}
 
-const LoginWithSocials = (props: Props) => {
+const LoginWithSocials = ({text}: Props) => {
   return (
-    <div>
+    <div className=''>
 
           <div className="flex items-center w-full gap-2 my-[22px]">
               <hr className="w-full h-[1px]" />
               <p className="flex-shrink-0 text-xs text-[#6A707C]">
-                  Or Login with
+                  Or {text} with
               </p>
               <hr className="w-full h-[1px]" />
           </div>
